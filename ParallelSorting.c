@@ -60,6 +60,9 @@ int main(int argc, char *argv) {
 }
 
 void *sort(void* ptr) {
-	printf("here \n");
+ 	struct range r = *((struct range *)(ptr));
+
+	printf("Begin: %d \t", r.start_index);
+	printf("End: %d \n", r.end_index);
 	pthread_exit(0);
 }
