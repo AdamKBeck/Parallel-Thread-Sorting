@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <pthread.h>
 
-int global_array[] = {23,45,23,576,34,23,56,34,123,76,45};
+int global_array[] = {23,45,23,576,34,23,56,34,123,23,234,12,34,46,67,789,23,145,76,45};
 
 struct range {
 	int start_index;
@@ -12,6 +12,7 @@ struct range {
 void* sort(void* ptr);
 
 int main(int argc, char *argv) {
+	printf("Global array size: %ld \n", sizeof(global_array) / sizeof(int));
 	// Get number of threads from user
 	printf("How many threads? ");
 	int num_threads;
@@ -33,9 +34,10 @@ int main(int argc, char *argv) {
 	// Create n-1 threads and start sorting slices of the array
 	for (int i = 0; i < num_threads-1; i++) {
 		r[i].start_index = farthestRange;
-		r[i].end_index= farthestRange + intervalRange;
+		r[i].end_index = farthestRange + intervalRange;
 
-		farthestRange = r[i].end_index + 1;
+		//TODO: Splits are incorrect for certain ratios. Fix for final release
+		farthestRange = r[i].end_index; 
 		
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
@@ -60,9 +62,41 @@ int main(int argc, char *argv) {
 }
 
 void *sort(void* ptr) {
+	// Dereference the void pointer into our struct so we can access its fields
  	struct range r = *((struct range *)(ptr));
 
+	// Print out the range we are sorting for proof of correctness 
+	// All of the ranges, combined, equal our total range of the global array
 	printf("Begin: %d \t", r.start_index);
 	printf("End: %d \n", r.end_index);
+
+	printf("Indices before sorting: [");
+	for (int i = r.start_index; i < r.end_index; i++) {
+		printf("%d,", global_array[i]);
+	}
+	printf("]\n");
+
+
+
+
+	// Sort the range
+	// TODO: This is a bubble-sort example. Let user decide what type of sorting to do.
+	printf("Indices after sorting: [");
+	int i, j;
+	int n = r.end_index - r.start_index + 1;
+	for (int i = 0; i < n; i++) {
+		for (j = 1; j < (n-i); j++) {
+			if (global_array[j-1+r.start_index] > global_array[j+r.start_index]) {
+				int temp = global_array[j-1+r.start_index];
+				global_array[j-1+r.start_index] = global_array[j+r.start_index];
+				global_array[j+r.start_index] = temp;
+			}
+		}
+	}
+	for (int i = r.start_index; i < r.end_index; i++) {
+		printf("%d,", global_array[i]);
+	}
+	printf("]\n\n");
+
 	pthread_exit(0);
 }
