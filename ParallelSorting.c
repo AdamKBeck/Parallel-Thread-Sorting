@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <semaphore.h>
 
 int global_array[] = {23,45,23,576,34,23,56,34,123,23,234,12,34,46,67,789,23,145,76,45};
 
@@ -11,10 +12,13 @@ struct range {
 };
 
 void* sort(void* ptr);
+int sorting_choice;
+sem_t mutex;
 
 int main(int argc, char *argv) {
 	// Save the global array size, as this will be needed a lot
 	int global_size = sizeof(global_array) / sizeof(int);
+	sem_init(&mutex, 0, 1); // Used in the sort() function
 
 	// Get number of threads from user
 	printf("How many threads? ");
@@ -26,6 +30,17 @@ int main(int argc, char *argv) {
 		printf("Thread count must be greater than 0, and less than 17\n");
 		printf("How many threads? ");
 		scanf("%d", &num_threads);
+	}
+
+	// Get the type of sorting from the user.
+	printf("What type of sorting? (1 -> insertion, 2 -> bubble, 3 -> quicksort) ");
+	scanf("%d", &sorting_choice);
+
+	// Force the user to enter in a sorting number between 1 and 3, inclusive
+	while (!(0 < sorting_choice && sorting_choice < 4)) {
+		printf("Sorting choice must be greater than 0, and less than 4\n");
+		printf("What type of sorting? (1 -> insertion, 2 -> bubble, 3 -> quicksort)\n");
+		scanf("%d", &sorting_choice);
 	}
 
 	//  Calculate the slice size each thread needs to work on in the global array
@@ -44,7 +59,8 @@ int main(int argc, char *argv) {
 	printf("]\n");
 	printf("Global size: %d\n", global_size);
 	printf("Number of threads: %d\n", num_threads);
-	printf("Interval range: %f\n\n", interval_range);
+	printf("Interval range: %f\n", interval_range);
+	printf("Sorting choice: %d\n\n", sorting_choice);
 
 	// Create as many threads as the user specified
 	pthread_t threads[num_threads];
@@ -96,6 +112,7 @@ void *sort(void* ptr) {
 	// Print out the range we are sorting for proof of correctness 
 	// All of the ranges, combined, equal our total range of the global array
 	// Note: Begin and End indices are inclusive. Account for this in the for loops
+	sem_wait(&mutex);
 	printf("Begin: %d \t", r.start_index);
 	printf("End: %d \n", r.end_index);
 	printf("Indices before sorting: [");
@@ -103,6 +120,7 @@ void *sort(void* ptr) {
 		printf("%d,", global_array[i]);
 	}
 	printf("]\n");
+	sem_post(&mutex);
 	
 	// Sort the range using a hard-coded sorting method
 	for (i = r.start_index; i <= r.end_index; i++) {
@@ -113,10 +131,9 @@ void *sort(void* ptr) {
 			global_array[j] = global_array[j-1];
 			global_array[j-1] = temp;
 
-			j -= 1;  //TODO: is j-- valid for C99?
+			j--;
 		}
 	}
-	printf("\n");
 	
 	printf("Indices after sorting: [");
 	for (int i = r.start_index; i <= r.end_index; i++) {
