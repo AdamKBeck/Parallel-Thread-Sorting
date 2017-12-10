@@ -1,0 +1,56 @@
+All files:
+
+makefile: Helps make and clean the program files
+ParallelSorting: The executable file after the gcc command in the makefile
+ParallelSorting.c: The file in which the project is done in. It takes user input, creates threads based on that input, and sorts an array in parallel using POSIX threads based on the user input.
+
+Major data structures:
+POSIX threads: to parallelize the sorting
+
+struct range: This struct represents the range each thread sorts upon. This struct has a start and end index, so each thread's access to the range struct only sorts indices between the start and end index fields, inclusive.
+
+A global array to sort is provided at the top of the ParallelSorting.c file.
+
+Optional: I might want to make a ParallelSorting.h file if I find that I need a lot of helper methods for the final project.
+
+Also, I will need .slurm files to run this on the HPC for the final version.
+
+Example output:
+adam@AdamsLaptop ~/EECS_338/Final_Project $ make
+gcc -o ParallelSorting ParallelSorting.c -lpthread -std=c99
+adam@AdamsLaptop ~/EECS_338/Final_Project $ ./ParallelSorting 
+Global array size: 20 
+How many threads? 4
+Begin: 0 	End: 5 
+Indices before sorting: [23,45,23,576,34,]
+Indices after sorting: [23,23,23,34,45,]
+
+Begin: 5 	End: 10 
+Indices before sorting: [576,56,34,123,23,]
+Indices after sorting: [23,34,56,123,234,]
+
+Begin: 10 	End: 15 
+Indices before sorting: [576,12,34,46,67,]
+Indices after sorting: [12,34,46,67,576,]
+
+Begin: 15 	End: 19 
+Indices before sorting: [789,23,145,76,]
+Indices after sorting: [23,45,76,145,]
+
+Finished!adam@AdamsLaptop ~/EECS_338/Final_Project 
+
+Explanation of output: We wanted 4 threads to work on a pre-defined array of size 20. We can see each array's slice, before and after sorting. Now, all the slices of the array are sorted, so if one was inclined, we can merge these back into a sorted array.
+
+Errors: The array slicing is almost correct, even taking into account the fact that slicing might be uneven (e.g. each thread wants to work on a slice of size 3.7).
+
+For this beta version: either the slicing algorithm is wrong, or my sorting algorithm has an off by 1 error, hence why these sorted slices don't represent the full array.
+
+
+TODO for the final project:
+1. Fix the slicing algorithm
+2. Create cardinality constraints (e.g. a user can't have -4 threads, or 1000000000000 threads, etc.)
+3. Let the user decide what sort to do, and do that for each thread.
+4. Merge the slices into a sorted array
+5. Run on HPC when all of the above is finished.
+
+My progress report are my git commits: https://github.com/AdamKBeck/Parallel-Thread-Sorting/commits/master
