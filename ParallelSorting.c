@@ -4,6 +4,7 @@
 
 int global_array[] = {23,45,23,576,34,23,56,34,123,23,234,12,34,46,67,789,23,145,76,45};
 
+// Each thread uses this struct to sort a specified slice of the global array
 struct range {
 	int start_index;
 	int end_index;
@@ -45,21 +46,25 @@ int main(int argc, char *argv) {
 	printf("Number of threads: %d\n", num_threads);
 	printf("Interval range: %f\n\n", interval_range);
 
-	//TODO: check below, as above is correct 
-	
 	// Create as many threads as the user specified
 	pthread_t threads[num_threads];
 	struct range r[num_threads];
-	int farthest_range = 0;
-
 
 	// Create n-1 threads and start sorting slices of the array
+	int farthest_range = 0; // A helper variable to help assign slices to threads
 	for (int i = 0; i < num_threads-1; i++) {
 		r[i].start_index = farthest_range;
-		r[i].end_index = farthest_range + interval_range;
+		
+		/* Floor the interval_range for the first n-1 threads. The n-th thread
+		 * will pick up the remainder
+		 * We subtract 1 from interval range because the start_index acts as the
+		 * first element in our slice, so our range represents the total amount
+		 * of elements for the slice, not how much we add to the start_index to 
+		 * assign for the end_index
+		 */
+		r[i].end_index = r[i].start_index + ((int)interval_range - 1);
 
-		//TODO: Splits are incorrect for certain ratios. Fix for final release
-		farthest_range = r[i].end_index; 
+		farthest_range = r[i].end_index + 1; 
 		
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
@@ -67,9 +72,8 @@ int main(int argc, char *argv) {
 	}
 	
 	// Create the last thread, so we have n in total, to sort the last potentially uneven slice
-	struct range range_instantiation;
 	r[num_threads-1].start_index= farthest_range;
-	r[num_threads-1].end_index = (sizeof(global_array) / sizeof(int)) -1; // end of array
+	r[num_threads-1].end_index = global_size - 1; // the end index is the end of the array
 
 	pthread_create(&threads[num_threads-1], NULL, sort, &r[num_threads -1]);
 	
@@ -89,18 +93,15 @@ void *sort(void* ptr) {
 
 	// Print out the range we are sorting for proof of correctness 
 	// All of the ranges, combined, equal our total range of the global array
+	// Note: Begin and End indices are inclusive. Account for this in the for loops
 	printf("Begin: %d \t", r.start_index);
 	printf("End: %d \n", r.end_index);
-
 	printf("Indices before sorting: [");
-	for (int i = r.start_index; i < r.end_index; i++) {
+	for (int i = r.start_index; i <= r.end_index; i++) {
 		printf("%d,", global_array[i]);
 	}
 	printf("]\n");
-
-
-
-
+	
 	// Sort the range
 	// TODO: This is a bubble-sort example. Let user decide what type of sorting to do.
 	printf("Indices after sorting: [");
