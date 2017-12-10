@@ -12,6 +12,8 @@ struct range {
 };
 
 void* sort(void* ptr);
+void insertion_sort(struct range *r);
+
 int sorting_choice;
 sem_t mutex;
 
@@ -122,18 +124,10 @@ void *sort(void* ptr) {
 	printf("]\n");
 	sem_post(&mutex);
 	
-	// Sort the range using a hard-coded sorting method
-	for (i = r.start_index; i <= r.end_index; i++) {
-		j = i;
-		while (j > r.start_index && global_array[j] < global_array[j-1]) {
-			// Swap i-th index with the previous index
-			int temp = global_array[j];
-			global_array[j] = global_array[j-1];
-			global_array[j-1] = temp;
-
-			j--;
-		}
+	if (sorting_choice == 1) {
+		insertion_sort(&r);
 	}
+
 	
 	printf("Indices after sorting: [");
 	for (int i = r.start_index; i <= r.end_index; i++) {
@@ -142,4 +136,22 @@ void *sort(void* ptr) {
 	printf("]\n\n");
 
 	pthread_exit(0);
+}
+
+// Sorts a thread's slice, given the thread's range struct reference
+void insertion_sort(struct range *r) {
+	int i;
+	int j;
+
+	for (i = r->start_index; i <= r->end_index; i++) {
+		j = i;
+		while (j > r->start_index && global_array[j] < global_array[j-1]) {
+			// Swap i-th index with the previous index
+			int temp = global_array[j];
+			global_array[j] = global_array[j-1];
+			global_array[j-1] = temp;
+
+			j--;
+		}
+	}
 }
