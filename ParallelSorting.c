@@ -155,11 +155,11 @@ void *sort(void* ptr) {
 void insertion_sort(struct range *r) {
 	int i;
 	int j;
-
+	
 	for (i = r->start_index; i <= r->end_index; i++) {
 		j = i;
 		while (j > r->start_index && global_array[j] < global_array[j-1]) {
-			// Swap i-th index with the previous index
+			// Swap j-th index with the previous index
 			int temp = global_array[j];
 			global_array[j] = global_array[j-1];
 			global_array[j-1] = temp;
@@ -170,7 +170,20 @@ void insertion_sort(struct range *r) {
 }
 
 void bubble_sort(struct range *r) { 
+	int i;
+	int j;
 
+	for (i = r->start_index; i <= r->end_index; i++) {
+		for (j = r->start_index; j < r->end_index - (i - r->start_index); j++) {
+			if (global_array[j] > global_array[j+1]) {
+				// Swap j-th index with the previous index
+				int temp = global_array[j];
+				global_array[j] = global_array[j+1];
+				global_array[j+1] = temp;
+			}
+		}
+	}
+	
 }
 
 void quick_sort(struct range *r) { 
