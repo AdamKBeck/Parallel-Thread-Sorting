@@ -72,7 +72,7 @@ int main(int argc, char *argv) {
 	}
 	
 	// Create the last thread, so we have n in total, to sort the last potentially uneven slice
-	r[num_threads-1].start_index= farthest_range;
+	r[num_threads-1].start_index = farthest_range;
 	r[num_threads-1].end_index = global_size - 1; // the end index is the end of the array
 
 	pthread_create(&threads[num_threads-1], NULL, sort, &r[num_threads -1]);
@@ -84,12 +84,14 @@ int main(int argc, char *argv) {
 
 	printf("Finished!");
 
-	return 0;
-}
+	return 0; }
 
+// TODO: Let the user define what type of sorting to do
 void *sort(void* ptr) {
 	// Dereference the void pointer into our struct so we can access its fields
  	struct range r = *((struct range *)(ptr));
+	int i;
+	int j;
 
 	// Print out the range we are sorting for proof of correctness 
 	// All of the ranges, combined, equal our total range of the global array
@@ -97,26 +99,27 @@ void *sort(void* ptr) {
 	printf("Begin: %d \t", r.start_index);
 	printf("End: %d \n", r.end_index);
 	printf("Indices before sorting: [");
-	for (int i = r.start_index; i <= r.end_index; i++) {
+	for (i = r.start_index; i <= r.end_index; i++) {
 		printf("%d,", global_array[i]);
 	}
 	printf("]\n");
 	
-	// Sort the range
-	// TODO: This is a bubble-sort example. Let user decide what type of sorting to do.
-	printf("Indices after sorting: [");
-	int i, j;
-	int n = r.end_index - r.start_index + 1;
-	for (int i = 0; i < n; i++) {
-		for (j = 1; j < (n-i); j++) {
-			if (global_array[j-1+r.start_index] > global_array[j+r.start_index]) {
-				int temp = global_array[j-1+r.start_index];
-				global_array[j-1+r.start_index] = global_array[j+r.start_index];
-				global_array[j+r.start_index] = temp;
-			}
+	// Sort the range using a hard-coded sorting method
+	for (i = r.start_index; i <= r.end_index; i++) {
+		j = i;
+		while (j > r.start_index && global_array[j] < global_array[j-1]) {
+			// Swap i-th index with the previous index
+			int temp = global_array[j];
+			global_array[j] = global_array[j-1];
+			global_array[j-1] = temp;
+
+			j -= 1;  //TODO: is j-- valid for C99?
 		}
 	}
-	for (int i = r.start_index; i < r.end_index; i++) {
+	printf("\n");
+	
+	printf("Indices after sorting: [");
+	for (int i = r.start_index; i <= r.end_index; i++) {
 		printf("%d,", global_array[i]);
 	}
 	printf("]\n\n");
