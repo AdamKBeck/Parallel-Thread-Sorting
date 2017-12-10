@@ -11,11 +11,16 @@ struct range {
 	int end_index;
 };
 
+// Each thread passes through the sort function to set up a range struct
 void* sort(void* ptr);
+
+// Threads are then delegated to a sorting function depending on user input
 void insertion_sort(struct range *r);
+void bubble_sort(struct range *r);
+void quick_sort(struct range *r);
 
 int sorting_choice;
-sem_t mutex;
+sem_t mutex; // Used when each thread prints out info in the sort() function
 
 int main(int argc, char *argv) {
 	// Save the global array size, as this will be needed a lot
@@ -127,13 +132,21 @@ void *sort(void* ptr) {
 	if (sorting_choice == 1) {
 		insertion_sort(&r);
 	}
+	else if (sorting_choice == 2) {
+		bubble_sort(&r);
+	}
+	else {
+		quick_sort(&r);
+	}
 
 	
+	sem_wait(&mutex);
 	printf("Indices after sorting: [");
 	for (int i = r.start_index; i <= r.end_index; i++) {
 		printf("%d,", global_array[i]);
 	}
 	printf("]\n\n");
+	sem_post(&mutex);
 
 	pthread_exit(0);
 }
@@ -155,3 +168,16 @@ void insertion_sort(struct range *r) {
 		}
 	}
 }
+
+void bubble_sort(struct range *r) { 
+
+}
+
+void quick_sort(struct range *r) { 
+
+}
+
+
+
+
+
