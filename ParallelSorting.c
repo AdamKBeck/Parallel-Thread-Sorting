@@ -12,32 +12,54 @@ struct range {
 void* sort(void* ptr);
 
 int main(int argc, char *argv) {
-	printf("Global array size: %ld \n", sizeof(global_array) / sizeof(int));
+	// Save the global array size, as this will be needed a lot
+	int global_size = sizeof(global_array) / sizeof(int);
+
 	// Get number of threads from user
 	printf("How many threads? ");
 	int num_threads;
 	scanf("%d", &num_threads);
 	
-	//TODO: cardinality constraints. Can the user enter in -4 threads? etc.
+	// Force the user to enter in a thread count between 1 and 16, inclusive
+	while (!(0 < num_threads && num_threads < 17)) {
+		printf("Thread count must be greater than 0, and less than 17\n");
+		printf("How many threads? ");
+		scanf("%d", &num_threads);
+	}
 
-	// Calculate the interval each thread needs to work on in the global array
-	// This is an int, as the final thread will pick up the remaining interval slice,
-	// knowing that most invervals aren't evenly sliced in the global array
-	int intervalRange = (sizeof(global_array) / sizeof(int)) / num_threads;
+	//  Calculate the slice size each thread needs to work on in the global array
+	double interval_range = global_size / (double)num_threads;
 
+	// Print out the global array, its size, number of threads, and the slice range
+	printf("\n[");
+	for (int i = 0; i < global_size; i++) {
+		if (i == global_size -1) {
+			printf("%d", global_array[i]);
+		}
+		else {
+			printf("%d,", global_array[i]);
+		}
+	}
+	printf("]\n");
+	printf("Global size: %d\n", global_size);
+	printf("Number of threads: %d\n", num_threads);
+	printf("Interval range: %f\n\n", interval_range);
+
+	//TODO: check below, as above is correct 
+	
 	// Create as many threads as the user specified
 	pthread_t threads[num_threads];
 	struct range r[num_threads];
-	int farthestRange = 0;
+	int farthest_range = 0;
 
 
 	// Create n-1 threads and start sorting slices of the array
 	for (int i = 0; i < num_threads-1; i++) {
-		r[i].start_index = farthestRange;
-		r[i].end_index = farthestRange + intervalRange;
+		r[i].start_index = farthest_range;
+		r[i].end_index = farthest_range + interval_range;
 
 		//TODO: Splits are incorrect for certain ratios. Fix for final release
-		farthestRange = r[i].end_index; 
+		farthest_range = r[i].end_index; 
 		
 		pthread_attr_t attr;
 		pthread_attr_init(&attr);
@@ -46,7 +68,7 @@ int main(int argc, char *argv) {
 	
 	// Create the last thread, so we have n in total, to sort the last potentially uneven slice
 	struct range range_instantiation;
-	r[num_threads-1].start_index= farthestRange;
+	r[num_threads-1].start_index= farthest_range;
 	r[num_threads-1].end_index = (sizeof(global_array) / sizeof(int)) -1; // end of array
 
 	pthread_create(&threads[num_threads-1], NULL, sort, &r[num_threads -1]);
