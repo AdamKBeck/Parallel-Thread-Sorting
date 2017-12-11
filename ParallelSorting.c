@@ -14,8 +14,9 @@
 #include <pthread.h>
 #include <semaphore.h>
 #include <limits.h>
+#include <stdlib.h>
 
-int global_array[] = {23,45,23,576,34,23,56,34,123,23,234,12,34,46,67,789,23,145,76,45};
+int global_array[20];
 
 // Each thread uses this struct to sort a specified slice of the global array
 struct range {
@@ -27,6 +28,7 @@ struct range {
 void* sort(void* ptr);
 
 // Threads are then delegated to a sorting function depending on user input
+void sorting_analysis(int n, int s);
 void insertion_sort(struct range *r);
 void bubble_sort(struct range *r);
 void quick_sort(struct range *r);
@@ -36,36 +38,29 @@ int sorting_choice;
 sem_t mutex; // Used when each thread prints out info in the sort() function
 
 int main(int argc, char *argv) {
+	sorting_analysis(3, 1);
+		
+	return 0;
+}
+
+void sorting_analysis(int n, int s) {
+	// Randomly fill array
+	for (int i = 0; i < 20; i++) {
+		global_array[i] = rand();
+	}
+
 	// Save the global array size, as this will be needed a lot
 	int global_size = sizeof(global_array) / sizeof(int);
 	sem_init(&mutex, 0, 1); // Used in the sort() function
 
-	// Get number of threads from user
-	printf("How many threads? ");
-	int num_threads;
-	scanf("%d", &num_threads);
-	
-	// Force the user to enter in a thread count between 1 and 16, inclusive
-	while (!(0 < num_threads && num_threads < 17)) {
-		printf("Thread count must be greater than 0, and less than 17\n");
-		printf("How many threads? ");
-		scanf("%d", &num_threads);
-	}
-
-	// Get the type of sorting from the user.
-	printf("What type of sorting? (1 -> insertion, 2 -> bubble, 3 -> quicksort) ");
-	scanf("%d", &sorting_choice);
-
-	// Force the user to enter in a sorting number between 1 and 3, inclusive
-	while (!(0 < sorting_choice && sorting_choice < 4)) {
-		printf("Sorting choice must be greater than 0, and less than 4\n");
-		printf("What type of sorting? (1 -> insertion, 2 -> bubble, 3 -> quicksort)\n");
-		scanf("%d", &sorting_choice);
-	}
+	// Get number of threads from the function paramater, and sorting choice
+	int num_threads = n;
+	sorting_choice = s;
 
 	//  Calculate the slice size each thread needs to work on in the global array
 	double interval_range = global_size / (double)num_threads;
 
+	/*
 	// Print out the global array, its size, number of threads, and the slice range
 	printf("\n[");
 	for (int i = 0; i < global_size; i++) {
@@ -76,13 +71,17 @@ int main(int argc, char *argv) {
 			printf("%d,", global_array[i]);
 		}
 	}
+	*/
+
+	/*
 	printf("]\n");
 	printf("Global size: %d\n", global_size);
 	printf("Number of threads: %d\n", num_threads);
 	printf("Interval range: %f\n", interval_range);
 	printf("Sorting choice: %d\n\n", sorting_choice);
+	*/
 
-	// Create as many threads as the user specified
+	// Create as many threads as the paramater specified
 	pthread_t threads[num_threads];
 	struct range r[num_threads];
 
@@ -152,22 +151,26 @@ int main(int argc, char *argv) {
 		min = INT_MAX;
 	}
 	
+	
+	/*
 	printf("\nSolution indices after sorting: [");
 	for (int i = 0; i < global_size; i++) {
 		printf("%d, ", solution[i]);
 	}
 	printf("]\n\n");
+	*/
+	
 
-	printf("Finished!");
+	printf("Finished! \n");
 
-	return 0; }
-
+}
 void *sort(void* ptr) {
 	// Dereference the void pointer into our struct so we can access its fields
  	struct range r = *((struct range *)(ptr));
 	int i;
 	int j;
 
+	/*
 	// Print out the range we are sorting for proof of correctness 
 	// All of the ranges, combined, equal our total range of the global array
 	// Note: Begin and End indices are inclusive. Account for this in the for loops
@@ -179,7 +182,7 @@ void *sort(void* ptr) {
 		printf("%d,", global_array[i]);
 	}
 	printf("]\n");
-	sem_post(&mutex);
+	sem_post(&mutex); */
 	
 	if (sorting_choice == 1) {
 		insertion_sort(&r);
@@ -191,6 +194,7 @@ void *sort(void* ptr) {
 		quick_sort(&r);
 	}
 	
+	/*
 	sem_wait(&mutex);
 	printf("Indices after sorting: [");
 	for (i = r.start_index; i <= r.end_index; i++) {
@@ -198,6 +202,7 @@ void *sort(void* ptr) {
 	}
 	printf("]\n");
 	sem_post(&mutex);
+	*/
 
 	pthread_exit(0);
 }
