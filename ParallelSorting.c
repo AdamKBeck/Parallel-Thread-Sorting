@@ -1,7 +1,19 @@
+/* This project splits an array into slices, the number of slices is defined
+ * by the user. In parallel, threads sort the slices, and then the slices are 
+ * merged together into a sorted array. The user specifies what type of sorting
+ * each slice does (quicksort, insertion, or bubble), but since the project will
+ * run on the HPC, I will manually run many different sizes and types of sorting so
+ * I can graph my solution.
+ *
+ * The project is written in a mix of ANSI C and C99, as I confused myself midway
+ * through the development with what compiler the HPC has, and what statements are and
+ * aren't allowed in C99.
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
 #include <semaphore.h>
+#include <limits.h>
 
 int global_array[] = {23,45,23,576,34,23,56,34,123,23,234,12,34,46,67,789,23,145,76,45};
 
@@ -106,12 +118,43 @@ int main(int argc, char *argv) {
 		pthread_join(threads[i], NULL);
 	}
 
-	printf("Indices after sorting: [");
+	/* We have an array of structs representing slices in the array.
+	 * Instead of using a list library to realloc() and dealloc() a list of structs,
+	 * I will iterate through each struct and find the minimum value, to help build my
+	 * overall solution of the global sorted array. When the struct.start_index is greater than 
+	 * the struct.right_index, I ignore looking at this struct when findining the next global minimum.
+	 */
+	int solution[global_size];
+	// Zero out our solution
+	for (int i = 0; i < global_size; i++) {
+		solution[i] = 0;
+	}
 
-	for (int k = 0; k < num_threads; k++) {
-		for (int i = r[k].start_index; i <= r[k].end_index; i++) {
-			printf("%d,", global_array[i]);
-		}
+	int min = INT_MAX;
+	int min_struct = 0;
+
+	// We need to place 'global_size' elements in order. So loop this many of times
+	for (int k = 0; k < global_size; k++) {
+		// Out of all the start indices for the structs, find the minimum one.
+		for (int i = 0; i < num_threads; i++) {
+			if (r[i].start_index > r[i].end_index) {
+				continue;
+			}					
+			else if (global_array[r[i].start_index] < min){
+				min = global_array[r[i].start_index];
+				min_struct = i; 
+			}
+		}	
+		
+		// Place this element in the global array to build the solution
+		solution[k] = min;
+		r[min_struct].start_index++;
+		min = INT_MAX;
+	}
+	
+	printf("\nSolution indices after sorting: [");
+	for (int i = 0; i < global_size; i++) {
+		printf("%d, ", solution[i]);
 	}
 	printf("]\n\n");
 
@@ -119,7 +162,6 @@ int main(int argc, char *argv) {
 
 	return 0; }
 
-// TODO: Let the user define what type of sorting to do
 void *sort(void* ptr) {
 	// Dereference the void pointer into our struct so we can access its fields
  	struct range r = *((struct range *)(ptr));
