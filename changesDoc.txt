@@ -1,0 +1,3 @@
+I had to use a mutex semaphore for my printf() statements. 
+
+I forgot that with my multiple threads, this would be an issue if I don't control the printf() flow.
