@@ -18,6 +18,7 @@ void* sort(void* ptr);
 void insertion_sort(struct range *r);
 void bubble_sort(struct range *r);
 void quick_sort(struct range *r);
+void quick_sort_array(int *array, int size);
 
 int sorting_choice;
 sem_t mutex; // Used when each thread prints out info in the sort() function
@@ -105,6 +106,15 @@ int main(int argc, char *argv) {
 		pthread_join(threads[i], NULL);
 	}
 
+	printf("Indices after sorting: [");
+
+	for (int k = 0; k < num_threads; k++) {
+		for (int i = r[k].start_index; i <= r[k].end_index; i++) {
+			printf("%d,", global_array[i]);
+		}
+	}
+	printf("]\n\n");
+
 	printf("Finished!");
 
 	return 0; }
@@ -138,14 +148,13 @@ void *sort(void* ptr) {
 	else {
 		quick_sort(&r);
 	}
-
 	
 	sem_wait(&mutex);
 	printf("Indices after sorting: [");
-	for (int i = r.start_index; i <= r.end_index; i++) {
+	for (i = r.start_index; i <= r.end_index; i++) {
 		printf("%d,", global_array[i]);
 	}
-	printf("]\n\n");
+	printf("]\n");
 	sem_post(&mutex);
 
 	pthread_exit(0);
@@ -169,6 +178,7 @@ void insertion_sort(struct range *r) {
 	}
 }
 
+// Sorts a thread's slice, given the thread's range struct reference
 void bubble_sort(struct range *r) { 
 	int i;
 	int j;
@@ -186,11 +196,45 @@ void bubble_sort(struct range *r) {
 	
 }
 
+/* Sorts a thread's slice, given the thread's range struct reference.
+ * Instead of recursive calls with range structs as the paramater, I'm going to
+ * implement quicksort the traditional way, of recursively sorting an array with 
+ * left and right indices
+ */
 void quick_sort(struct range *r) { 
-
+	int *array = &global_array[r->start_index];
+	quick_sort_array(array, r->end_index - r->start_index + 1);
 }
 
+void quick_sort_array(int *array, int size) {
+	if (size <= 1) {
+		return;
+	}
 
+	int pivot = array[size/ 2];
 
+	int i, j;
+	for (i = 0, j = size- 1; ; i++, j--) {
+		while (array[i] < pivot){
+			i++;
+		} 
 
+		while (array[j] > pivot){
+			j--;
+		}
 
+		if (i >= j){
+			break;
+		}
+
+		// Swap indices i and j for quicksort
+		int temp = array[j];
+		array[j] = array[i];
+		array[i] = temp;
+
+	}
+
+	quick_sort_array(array, i);
+	quick_sort_array(array + i, size - i);
+
+}
