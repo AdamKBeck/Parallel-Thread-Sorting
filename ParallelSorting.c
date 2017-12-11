@@ -15,8 +15,9 @@
 #include <semaphore.h>
 #include <limits.h>
 #include <stdlib.h>
+#include <time.h>
 
-int global_array[20];
+int *global_array;
 
 // Each thread uses this struct to sort a specified slice of the global array
 struct range {
@@ -28,7 +29,7 @@ struct range {
 void* sort(void* ptr);
 
 // Threads are then delegated to a sorting function depending on user input
-void sorting_analysis(int n, int s);
+void sorting_analysis(int n, int s, int z);
 void insertion_sort(struct range *r);
 void bubble_sort(struct range *r);
 void quick_sort(struct range *r);
@@ -38,24 +39,45 @@ int sorting_choice;
 sem_t mutex; // Used when each thread prints out info in the sort() function
 
 int main(int argc, char *argv) {
-	sorting_analysis(3, 1);
+	int array_sizes[5] = {20, 200, 500, 2500, 10000};
+	int sorting_choices[3] = {0, 1, 2};
+	int split_sizes[4] = {2, 4, 8, 16};
+
+	for (int i = 0; i < 5; i++) {
+		for (int k = 0; k < 4; k++) {
+			for (int z = 0; z < 3; z++){
+				clock_t begin = clock();
+				sorting_analysis(array_sizes[i], split_sizes[k], sorting_choices[z]);
+				clock_t end = clock();
+
+				double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+
+				printf("Array size %d with %d threads and choice %d took %f seconds",
+						array_sizes[i], split_sizes[k], sorting_choices[z], time_spent);
+			}
+
+		}
+	}
+
 		
 	return 0;
 }
 
-void sorting_analysis(int n, int s) {
+void sorting_analysis(int n, int s, int z) {
+	sorting_choice = z;
 	// Randomly fill array
-	for (int i = 0; i < 20; i++) {
+	global_array = (int *)malloc(sizeof(int) * n);
+	for (int i = 0; i < n; i++) {
 		global_array[i] = rand();
 	}
 
 	// Save the global array size, as this will be needed a lot
-	int global_size = sizeof(global_array) / sizeof(int);
+	int global_size = n;
 	sem_init(&mutex, 0, 1); // Used in the sort() function
 
 	// Get number of threads from the function paramater, and sorting choice
-	int num_threads = n;
-	sorting_choice = s;
+	int num_threads = s;
+	sorting_choice = z;
 
 	//  Calculate the slice size each thread needs to work on in the global array
 	double interval_range = global_size / (double)num_threads;
@@ -150,16 +172,15 @@ void sorting_analysis(int n, int s) {
 		r[min_struct].start_index++;
 		min = INT_MAX;
 	}
-	
-	
+
 	/*
 	printf("\nSolution indices after sorting: [");
-	for (int i = 0; i < global_size; i++) {
+	for (int i = 0; i < n; i++) {
 		printf("%d, ", solution[i]);
 	}
 	printf("]\n\n");
 	*/
-	
+
 
 	printf("Finished! \n");
 
