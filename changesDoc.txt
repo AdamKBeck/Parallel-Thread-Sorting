@@ -1,3 +1,7 @@
 I had to use a mutex semaphore for my printf() statements. 
 
 I forgot that with my multiple threads, this would be an issue if I don't control the printf() flow.
+
+I did not graph any solutions as I'm testing in 3 dimensions. 
+
+Also, I did not run on the HPC as it involves restructuring my program to take in command line arguments from my .slurm file in a triple nested for loop. Instead, I accomplished this in my main method in C.
