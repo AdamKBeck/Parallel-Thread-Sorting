@@ -55,10 +55,8 @@ int main(int argc, char *argv) {
 				printf("Array size %d with %d threads and choice %d took %f seconds",
 						array_sizes[i], split_sizes[k], sorting_choices[z], time_spent);
 			}
-
 		}
 	}
-
 		
 	return 0;
 }
