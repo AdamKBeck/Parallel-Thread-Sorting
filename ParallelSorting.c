@@ -40,7 +40,7 @@ sem_t mutex; // Used when each thread prints out info in the sort() function
 
 int main(int argc, char *argv) {
 	int array_sizes[5] = {20, 200, 500, 2500, 10000};
-	int sorting_choices[3] = {0, 1, 2};
+	int sorting_choices[3] = {1, 2, 3};
 	int split_sizes[4] = {2, 4, 8, 16};
 
 	for (int i = 0; i < 5; i++) {
@@ -171,8 +171,7 @@ void sorting_analysis(int n, int s, int z) {
 		min = INT_MAX;
 	}
 
-	/* Prints out the solution indices for proof of correctness for small array sizes.
-	 * I'm only doing it for small array sizes so the output doesn't clutter the screen
+	/*
 	 if (n < 100) {
 
 	 printf("\nSolution indices after sorting: [");
