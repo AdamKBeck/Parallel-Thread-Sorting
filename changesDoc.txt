@@ -2,5 +2,4 @@ I had to use a mutex semaphore for my printf() statements.
 
 I forgot that with my multiple threads, this would be an issue if I don't control the printf() flow.
 
-I did not graph any solutions as I'm testing in 3 dimensions. 
-
+These are all commented out, and some outputs with the un-commented code have been saved to the text files in this folder.
