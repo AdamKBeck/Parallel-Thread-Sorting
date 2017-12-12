@@ -171,18 +171,21 @@ void sorting_analysis(int n, int s, int z) {
 		min = INT_MAX;
 	}
 
-	/*
-	printf("\nSolution indices after sorting: [");
-	for (int i = 0; i < n; i++) {
-		printf("%d, ", solution[i]);
-	}
-	printf("]\n\n");
-	*/
+	/* Prints out the solution indices for proof of correctness for small array sizes.
+	 * I'm only doing it for small array sizes so the output doesn't clutter the screen
+	 if (n < 100) {
 
+	 printf("\nSolution indices after sorting: [");
+	 for (int i = 0; i < n; i++) {
+	 printf("%d, ", solution[i]);
+	 }
+	 printf("]\n\n");
+	 }
+	 */
 
 	printf("Finished! \n");
-
 }
+
 void *sort(void* ptr) {
 	// Dereference the void pointer into our struct so we can access its fields
  	struct range r = *((struct range *)(ptr));

@@ -1,0 +1,97 @@
+
+Solution indices after sorting: [304089172, 424238335, 596516649, 719885386, 783368690, 846930886, 1025202362, 1102520059, 1189641421, 1303455736, 1350490027, 1365180540, 1540383426, 1649760492, 1681692777, 1714636915, 1804289383, 1957747793, 1967513926, 2044897763, ]
+
+Finished! 
+Array size 20 with 2 threads and choice 0 took 0.000314 seconds
+Solution indices after sorting: [35005211, 233665123, 278722862, 294702567, 336465782, 468703135, 521595368, 628175011, 635723058, 861021530, 1059961393, 1101513929, 1125898167, 1315634022, 1369133069, 1656478042, 1726956429, 1801979802, 2089018456, 2145174067, ]
+
+Finished! 
+Array size 20 with 2 threads and choice 1 took 0.000103 seconds
+Solution indices after sorting: [42999170, 135497281, 137806862, 149798315, 184803526, 412776091, 608413784, 749241873, 756898537, 859484421, 982906996, 1129566413, 1131176229, 1424268980, 1653377373, 1734575198, 1911759956, 1914544919, 1973594324, 2038664370, ]
+
+Finished! 
+Array size 20 with 2 threads and choice 2 took 0.000094 seconds
+Solution indices after sorting: [84353895, 511702305, 572660336, 610515434, 760313750, 805750846, 939819582, 1100661313, 1141616124, 1159126505, 1374344043, 1433925857, 1548233367, 1585990364, 1632621729, 1827336327, 1937477084, 1998898814, 2001100545, 2084420925, ]
+
+Finished! 
+Array size 20 with 4 threads and choice 0 took 0.000336 seconds
+Solution indices after sorting: [356426808, 491705403, 709393584, 752392754, 855636226, 943947739, 945117276, 1264095060, 1411549676, 1469348094, 1474612399, 1477171087, 1749698586, 1780695788, 1843993368, 1889947178, 1918502651, 1956297539, 1984210012, 2053999932, ]
+
+Finished! 
+Array size 20 with 4 threads and choice 1 took 0.000131 seconds
+Solution indices after sorting: [317097467, 364228444, 402724286, 463480570, 485560280, 593209441, 603570492, 660260756, 894429689, 927612902, 959997301, 1036140795, 1194953865, 1330573317, 1376710097, 1687926652, 1892066601, 1947346619, 1975960378, 2040651434, ]
+
+Finished! 
+Array size 20 with 4 threads and choice 2 took 0.000101 seconds
+Solution indices after sorting: [221558440, 269455306, 270744729, 327254586, 352406219, 498777856, 524872353, 631704567, 791698927, 822890675, 1063958031, 1255179497, 1469834481, 1572276965, 1600028624, 1610120709, 1633108117, 1703964683, 2007905771, 2114738097, ]
+
+Finished! 
+Array size 20 with 8 threads and choice 0 took 0.000852 seconds
+Solution indices after sorting: [112805732, 150122846, 160051528, 168002245, 200747796, 289700723, 378409503, 439493451, 515530019, 990892921, 1117142618, 1120048829, 1373226340, 1409959708, 1573363368, 1631518149, 1713258270, 1760243555, 2040332871, 2077486715, ]
+
+Finished! 
+Array size 20 with 8 threads and choice 1 took 0.001009 seconds
+Solution indices after sorting: [8936987, 111537764, 116087764, 155324914, 269441500, 338888228, 350322227, 387346491, 438792350, 841148365, 1231192379, 1275373743, 1622597488, 1760281936, 1869470124, 1911165193, 1960709859, 1982275856, 2142757034, 2147469841, ]
+
+Finished! 
+Array size 20 with 8 threads and choice 2 took 0.000726 seconds
+Solution indices after sorting: [76065818, 213975407, 653468858, 771151432, 971899228, 1139901474, 1186452551, 1239036029, 1244316437, 1350573793, 1476153275, 1605894428, 1605908235, 1626276121, 1784639529, 1789366143, 1875335928, 1884661237, 1987231011, 2130794395, ]
+
+Finished! 
+Array size 20 with 16 threads and choice 0 took 0.001031 seconds
+Solution indices after sorting: [159259470, 165344818, 352118606, 492067917, 496987743, 532670688, 680466996, 706043324, 1067854538, 1351797369, 1359512183, 1395235128, 1432114613, 1504569917, 1597322404, 1782436840, 1909002904, 1939964443, 2103318776, 2112255763, ]
+
+Finished! 
+Array size 20 with 16 threads and choice 1 took 0.001556 seconds
+Solution indices after sorting: [6939507, 243268139, 480298490, 502278611, 601385644, 722308542, 740759355, 933110197, 968338082, 1012502954, 1096689772, 1172755590, 1272469786, 1285228804, 1398295499, 1544617505, 1789376348, 1820388464, 2027907669, 2086206725, ]
+
+Finished! 
+Array size 20 with 16 threads and choice 2 took 0.001670 secondsFinished! 
+Array size 200 with 2 threads and choice 0 took 0.000065 secondsFinished! 
+Array size 200 with 2 threads and choice 1 took 0.000061 secondsFinished! 
+Array size 200 with 2 threads and choice 2 took 0.000057 secondsFinished! 
+Array size 200 with 4 threads and choice 0 took 0.000104 secondsFinished! 
+Array size 200 with 4 threads and choice 1 took 0.000155 secondsFinished! 
+Array size 200 with 4 threads and choice 2 took 0.000110 secondsFinished! 
+Array size 200 with 8 threads and choice 0 took 0.000516 secondsFinished! 
+Array size 200 with 8 threads and choice 1 took 0.001325 secondsFinished! 
+Array size 200 with 8 threads and choice 2 took 0.000615 secondsFinished! 
+Array size 200 with 16 threads and choice 0 took 0.001426 secondsFinished! 
+Array size 200 with 16 threads and choice 1 took 0.001411 secondsFinished! 
+Array size 200 with 16 threads and choice 2 took 0.001571 secondsFinished! 
+Array size 500 with 2 threads and choice 0 took 0.000074 secondsFinished! 
+Array size 500 with 2 threads and choice 1 took 0.000072 secondsFinished! 
+Array size 500 with 2 threads and choice 2 took 0.000086 secondsFinished! 
+Array size 500 with 4 threads and choice 0 took 0.000193 secondsFinished! 
+Array size 500 with 4 threads and choice 1 took 0.000107 secondsFinished! 
+Array size 500 with 4 threads and choice 2 took 0.000105 secondsFinished! 
+Array size 500 with 8 threads and choice 0 took 0.000540 secondsFinished! 
+Array size 500 with 8 threads and choice 1 took 0.001088 secondsFinished! 
+Array size 500 with 8 threads and choice 2 took 0.000574 secondsFinished! 
+Array size 500 with 16 threads and choice 0 took 0.001291 secondsFinished! 
+Array size 500 with 16 threads and choice 1 took 0.001458 secondsFinished! 
+Array size 500 with 16 threads and choice 2 took 0.001549 secondsFinished! 
+Array size 2500 with 2 threads and choice 0 took 0.000991 secondsFinished! 
+Array size 2500 with 2 threads and choice 1 took 0.007458 secondsFinished! 
+Array size 2500 with 2 threads and choice 2 took 0.004758 secondsFinished! 
+Array size 2500 with 4 threads and choice 0 took 0.000363 secondsFinished! 
+Array size 2500 with 4 threads and choice 1 took 0.000313 secondsFinished! 
+Array size 2500 with 4 threads and choice 2 took 0.003710 secondsFinished! 
+Array size 2500 with 8 threads and choice 0 took 0.000476 secondsFinished! 
+Array size 2500 with 8 threads and choice 1 took 0.000735 secondsFinished! 
+Array size 2500 with 8 threads and choice 2 took 0.000384 secondsFinished! 
+Array size 2500 with 16 threads and choice 0 took 0.001423 secondsFinished! 
+Array size 2500 with 16 threads and choice 1 took 0.001249 secondsFinished! 
+Array size 2500 with 16 threads and choice 2 took 0.001313 secondsFinished! 
+Array size 10000 with 2 threads and choice 0 took 0.000438 secondsFinished! 
+Array size 10000 with 2 threads and choice 1 took 0.057279 secondsFinished! 
+Array size 10000 with 2 threads and choice 2 took 0.109737 secondsFinished! 
+Array size 10000 with 4 threads and choice 0 took 0.000626 secondsFinished! 
+Array size 10000 with 4 threads and choice 1 took 0.039131 secondsFinished! 
+Array size 10000 with 4 threads and choice 2 took 0.062315 secondsFinished! 
+Array size 10000 with 8 threads and choice 0 took 0.001019 secondsFinished! 
+Array size 10000 with 8 threads and choice 1 took 0.010745 secondsFinished! 
+Array size 10000 with 8 threads and choice 2 took 0.025776 secondsFinished! 
+Array size 10000 with 16 threads and choice 0 took 0.002298 secondsFinished! 
+Array size 10000 with 16 threads and choice 1 took 0.002835 secondsFinished! 
+Array size 10000 with 16 threads and choice 2 took 0.005435 seconds
